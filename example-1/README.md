@@ -63,6 +63,19 @@ git --version
 If all commands return version information without errors, your development environment is ready for this example.
 
 
+## Create Azure Resources
+
+### Step 1: Create the Azure Storage Account
+
+Create an Azure Storage Account by following the process demonstrated during the seminar.
+
+Once the storage account has been created, create the following Blob Storage containers:
+
+- `student-profile-photo`
+- `lecturer-profile-photo`
+
+After creating the containers, obtain the storage account connection string.
+
 ## Running Unit Tests
 
 Before deploying the application, verify that each microservice is functioning correctly by running its unit tests. Repeat the following steps for each microservice:
@@ -121,7 +134,20 @@ Before deploying the application to Kubernetes, verify that the complete system 
 cd week05/example-1
 ```
 
-### Step 2: Build the Docker Images
+### Step 2: Update the Application Configuration
+
+Update the application configuration by adding the Azure Storage connection string to the appropriate environment files.
+
+The following services require the storage connection string:
+
+- `student-service/.env`
+- `lecturer-service/.env`
+
+Ensure that the environment variable names match those used by the application.
+
+> **Important:** Do not commit connection strings or other sensitive credentials to the Git repository.
+
+### Step 3: Build the Docker Images
 
 Build the Docker images for all application services.
 
@@ -129,7 +155,7 @@ Build the Docker images for all application services.
 docker compose build
 ```
 
-### Step 3: Start the Application
+### Step 4: Start the Application
 
 Start all application containers in detached mode.
 
@@ -137,7 +163,7 @@ Start all application containers in detached mode.
 docker compose up -d
 ```
 
-### Step 4: Verify the Running Containers
+### Step 5: Verify the Running Containers
 
 Confirm that all containers are running successfully.
 
@@ -159,7 +185,7 @@ You should see the following containers:
 * course-db
 * enrollment-db
 
-### Step 5: Access the Application
+### Step 6: Access the Application
 
 Open the application in your web browser.
 
@@ -169,7 +195,7 @@ http://localhost:5173
 
 Verify that the frontend loads successfully and that you can access the application without any errors.
 
-### Step 6: Stop the Application
+### Step 7: Stop the Application
 
 When you have finished testing the application, stop and remove the containers.
 
@@ -190,6 +216,15 @@ Verify that Kubernetes is running by executing:
 ```bash
 kubectl cluster-info
 ```
+
+### Step 2: Update the Kubernetes Application Secret
+
+Before deploying the application to Local Kubernetes, update the Kubernetes application secret file (`07-application-secret.yaml`) with the Azure Storage connection string.
+
+Ensure that the storage connection string is added to the appropriate Kubernetes Secret so that the `student-service` and `lecturer-service` can access Azure Blob Storage.
+
+Verify that the environment variable names used in the Kubernetes Secret match those defined in the application.
+
 
 ### Step 2: Deploy the Application
 
@@ -220,7 +255,7 @@ Wait until all Pods have a **Running** status before proceeding.
 Open the application in your web browser.
 
 ```text
-http://localhost:30080
+http://localhost:5173
 ```
 
 Verify that the frontend loads successfully and that all application features are functioning correctly.

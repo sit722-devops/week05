@@ -1,42 +1,42 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: lecturer-service
+  name: student-service
   namespace: default
 spec:
   replicas: 1
 
   selector:
     matchLabels:
-      app: lecturer-service
+      app: student-service
 
   template:
     metadata:
       labels:
-        app: lecturer-service
+        app: student-service
 
     spec:
       initContainers:
-        - name: wait-for-lecturer-db
+        - name: wait-for-student-db
           image: postgres:16-alpine
           command:
             - sh
             - -c
             - |
               until pg_isready \
-                -h lecturer-db \
+                -h student-db \
                 -p 5432 \
                 -U postgres \
-                -d lecturers;
+                -d students;
               do
-                echo "Waiting for lecturer database..."
+                echo "Waiting for student database..."
                 sleep 3
               done
 
       containers:
-        - name: lecturer-service
-          image: koalatech-lecturer-service:v1
-          imagePullPolicy: IfNotPresent
+        - name: student-service
+          image: <azure-container-registry-url>/koalatech-student-service:v1
+          imagePullPolicy: Always
 
           ports:
             - containerPort: 8000
@@ -55,10 +55,10 @@ spec:
                   key: POSTGRES_PASSWORD
 
             - name: POSTGRES_DB
-              value: lecturers
+              value: students
 
             - name: POSTGRES_HOST
-              value: lecturer-db
+              value: student-db
 
             - name: POSTGRES_PORT
               value: "5432"
@@ -79,7 +79,7 @@ spec:
                   key: AZURE_STORAGE_CONNECTION_STRING
 
             - name: AZURE_STORAGE_CONTAINER_NAME
-              value: lecturer-profile-photos
+              value: student-profile-photos
 
           readinessProbe:
             tcpSocket:
@@ -97,13 +97,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: lecturer-service
+  name: student-service
   namespace: default
 spec:
   type: ClusterIP
 
   selector:
-    app: lecturer-service
+    app: student-service
 
   ports:
     - name: http

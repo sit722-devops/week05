@@ -76,7 +76,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: koalatech-application-secret
-                  key: STUDENT_AZURE_STORAGE_CONNECTION_STRING
+                  key: AZURE_STORAGE_CONNECTION_STRING
 
             - name: AZURE_STORAGE_CONTAINER_NAME
               value: student-profile-photos

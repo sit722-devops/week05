@@ -35,8 +35,8 @@ spec:
 
       containers:
         - name: lecturer-service
-          image: koalatech-lecturer-service:v1
-          imagePullPolicy: IfNotPresent
+          image: <azure-container-registry-url>/koalatech-lecturer-service:v1
+          imagePullPolicy: Always
 
           ports:
             - containerPort: 8000
