@@ -67,18 +67,18 @@ If all commands return version information without errors, your development envi
 
 ### Step 1: Create the Azure Storage Account
 
-Create an Azure Storage Account by following the process demonstrated during the seminar.
+Create an **Azure Storage Account** by following the process demonstrated during the seminar.
 
-Once the storage account has been created, create the following Blob Storage containers:
+Once the storage account has been created, create the following *Blob Storage containers*:
 
 - `student-profile-photo`
 - `lecturer-profile-photo`
 
-After creating the containers, obtain the storage account connection string.
+After creating the containers, obtain the **storage account connection string** which will be used in later steps.
 
 ## Running Unit Tests
 
-Before deploying the application, verify that each microservice is functioning correctly by running its unit tests. Repeat the following steps for each microservice:
+Before deploying the application, verify that __each__ microservice is functioning correctly by running its unit tests. Repeat the following steps for each microservice:
 
 * `user-service`
 * `student-service`
@@ -86,8 +86,10 @@ Before deploying the application, verify that each microservice is functioning c
 * `course-service`
 * `enrollment-service`
 
- 
+
 ### Step 1: Start Database Service
+
+For each of the services, use Docker to run its'  respective DB. For example, the _User Service_ run:
 
 ```bash
 docker compose up -d user-db
@@ -129,11 +131,12 @@ pytest
 ```
 
 ### Step 6: Stop Database
+
 ```bash
 docker compose down
 ```
 
-Repeat the above steps for each of the remaining microservices. Ensure that all tests pass successfully before proceeding to the Docker Compose deployment.
+> Repeat the above steps (3 to 6) sequentially for **each of the remaining microservices**: `student-service`, `lecturer-service`, `course-service` and `enrollment-service`. Ensure that all tests pass successfully before proceeding to the Docker Compose deployment.
 
 
 ## Running the Application with Docker Compose
@@ -231,14 +234,13 @@ kubectl cluster-info
 
 ### Step 2: Update the Kubernetes Application Secret
 
-Before deploying the application to Local Kubernetes, update the Kubernetes application secret file (`07-application-secret.yaml`) with the Azure Storage connection string.
+Before deploying the application to Local Kubernetes, update the Kubernetes application secret file (`07-application-secret.yaml`) with the **Azure Storage connection string**.
 
-Ensure that the storage connection string is added to the appropriate Kubernetes Secret so that the `student-service` and `lecturer-service` can access Azure Blob Storage.
+Ensure that the storage connection string is added to the appropriate _Kubernetes Secret_ so that the `student-service` and `lecturer-service` can access Azure Blob Storage.
 
-Verify that the environment variable names used in the Kubernetes Secret match those defined in the application.
+Verify that the environment variable names used in the _Kubernetes Secret_ match those defined in the application.
 
-
-### Step 2: Deploy the Application
+### Step 3: Deploy the Application
 
 Apply all Kubernetes manifests.
 
@@ -246,7 +248,7 @@ Apply all Kubernetes manifests.
 kubectl apply -f kubernetes/
 ```
 
-### Step 3: Verify the Deployment
+### Step 4: Verify the Deployment
 
 Verify that all Pods are running successfully.
 
@@ -262,7 +264,7 @@ kubectl get services
 
 Wait until all Pods have a **Running** status before proceeding.
 
-### Step 4: Access the Application
+### Step 5: Access the Application
 
 Open the application in your web browser.
 
@@ -272,7 +274,7 @@ http://localhost:5173
 
 Verify that the frontend loads successfully and that all application features are functioning correctly.
 
-### Step 5: Delete the Deployment
+### Step 6: Delete the Deployment
 
 When you have finished testing the application, remove all Kubernetes resources.
 
