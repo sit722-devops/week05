@@ -1,5 +1,14 @@
+import os
+
 import jwt
 import pytest
+
+from dotenv import load_dotenv
+
+# Load test environment before importing the app
+load_dotenv(".env.test", override=True)
+
+
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -9,12 +18,22 @@ from app.db import Base, get_db
 from app.main import app
 from app.security import JWT_ALGORITHM, JWT_SECRET_KEY
 
+POSTGRES_USER = os.getenv("POSTGRES_USER", "postgres")
+POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "postgres")
+POSTGRES_DB = os.getenv("POSTGRES_DB", "students")
+POSTGRES_HOST = os.getenv("POSTGRES_HOST", "localhost")
+POSTGRES_PORT = os.getenv("POSTGRES_PORT", "5434")
 
-TEST_DATABASE_URL = "sqlite://"
-
+TEST_DATABASE_URL = os.getenv(
+    "DATABASE_URL",
+    (
+        f"postgresql+psycopg2://{POSTGRES_USER}:"
+        f"{POSTGRES_PASSWORD}@{POSTGRES_HOST}:"
+        f"{POSTGRES_PORT}/{POSTGRES_DB}"
+    ),
+)
 test_engine = create_engine(
     TEST_DATABASE_URL,
-    connect_args={"check_same_thread": False},
     poolclass=StaticPool,
 )
 
@@ -93,27 +112,21 @@ def student_token() -> str:
 
 @pytest.fixture
 def admin_headers(admin_token: str) -> dict[str, str]:
-    return {
-        "Authorization": f"Bearer {admin_token}"
-    }
+    return {"Authorization": f"Bearer {admin_token}"}
 
 
 @pytest.fixture
 def lecturer_headers(
     lecturer_token: str,
 ) -> dict[str, str]:
-    return {
-        "Authorization": f"Bearer {lecturer_token}"
-    }
+    return {"Authorization": f"Bearer {lecturer_token}"}
 
 
 @pytest.fixture
 def student_headers(
     student_token: str,
 ) -> dict[str, str]:
-    return {
-        "Authorization": f"Bearer {student_token}"
-    }
+    return {"Authorization": f"Bearer {student_token}"}
 
 
 @pytest.fixture

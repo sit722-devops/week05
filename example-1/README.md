@@ -86,13 +86,20 @@ Before deploying the application, verify that each microservice is functioning c
 * `course-service`
 * `enrollment-service`
 
-### Step 1: Navigate to the Microservice Directory
+ 
+### Step 1: Start Database Service
+
+```bash
+docker compose up -d user-db
+```
+
+### Step 2: Navigate to the Microservice Directory
 
 ```bash
 cd user-service
 ```
 
-### Step 2: Create a Python Virtual Environment
+### Step 3: Create a Python Virtual Environment
 
 ```bash
 # Create the virtual environment
@@ -109,16 +116,21 @@ source ./.venv/bin/activate
 # .\.venv\Scripts\Activate.ps1
 ```
 
-### Step 3: Install the Required Packages
+### Step 4: Install the Required Packages
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Step 4: Execute the Unit Tests
+### Step 5: Execute the Unit Tests
 
 ```bash
 pytest
+```
+
+### Step 6: Stop Database
+```bash
+docker compose down
 ```
 
 Repeat the above steps for each of the remaining microservices. Ensure that all tests pass successfully before proceeding to the Docker Compose deployment.

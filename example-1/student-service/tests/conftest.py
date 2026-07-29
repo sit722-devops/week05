@@ -1,3 +1,9 @@
+import os
+from dotenv import load_dotenv
+
+# Load test environment before importing the app
+load_dotenv(".env.test", override=True)
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -9,12 +15,23 @@ from app.main import app
 from app.security import JWT_ALGORITHM, JWT_SECRET_KEY
 import jwt
 
+POSTGRES_USER = os.getenv("POSTGRES_USER", "postgres")
+POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "postgres")
+POSTGRES_DB = os.getenv("POSTGRES_DB", "students")
+POSTGRES_HOST = os.getenv("POSTGRES_HOST", "localhost")
+POSTGRES_PORT = os.getenv("POSTGRES_PORT", "5434")
 
-TEST_DATABASE_URL = "sqlite://"
+TEST_DATABASE_URL =  os.getenv(
+    "DATABASE_URL",
+    (
+        f"postgresql+psycopg2://{POSTGRES_USER}:"
+        f"{POSTGRES_PASSWORD}@{POSTGRES_HOST}:"
+        f"{POSTGRES_PORT}/{POSTGRES_DB}"
+    ),
+)
 
 test_engine = create_engine(
     TEST_DATABASE_URL,
-    connect_args={"check_same_thread": False},
     poolclass=StaticPool,
 )
 
