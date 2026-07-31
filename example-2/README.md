@@ -38,11 +38,11 @@ The frontend is exposed externally using a Kubernetes **LoadBalancer** service, 
 
 Before running this example, ensure the following software is installed and configured on your computer:
 
-* Docker Desktop with Kubernetes enabled
-* Python 3.12 or later
-* Git
-* Visual Studio Code (or another code editor)
-* kubectl command-line tool
+- Docker Desktop with Kubernetes enabled
+- Python 3.12 or later
+- Git
+- Visual Studio Code (or another code editor)
+- kubectl command-line tool
 
 To verify your installation, run the following commands:
 
@@ -69,7 +69,6 @@ Once the storage account has been created, create the following Blob Storage con
 
 After creating the containers, obtain the storage account connection string.
 
-
 ## Running Unit Tests
 
 Before deploying the application, verify that each microservice is functioning correctly by running its unit tests. Repeat the following steps for each microservice:
@@ -79,7 +78,6 @@ Before deploying the application, verify that each microservice is functioning c
 * `lecturer-service`
 * `course-service`
 * `enrollment-service`
-
 
 ### Step 1: Start Database Service
 
@@ -119,16 +117,23 @@ pip install -r requirements.txt
 ### Step 5: Execute the Unit Tests
 
 ```bash
-pytest
+pytest --verbose
 ```
 
-### Step 6: Stop Database
+### Step 6: Deactivate Virtual Session and Return to Parent Directory
+
+```bash
+deactivate
+cd ..
+```
+
+### Step 7: Stop Database
+
 ```bash
 docker compose down
 ```
 
 Repeat the above steps for each of the remaining microservices. Ensure that all tests pass successfully before proceeding to the Docker Compose deployment.
-
 
 ## Running the Application with Docker Compose
 
@@ -179,27 +184,27 @@ docker ps
 
 You should see the following containers:
 
-* frontend
-* user-service
-* student-service
-* lecturer-service
-* course-service
-* enrollment-service
-* user-db
-* student-db
-* lecturer-db
-* course-db
-* enrollment-db
+- frontend
+- user-service
+- student-service
+- lecturer-service
+- course-service
+- enrollment-service
+- user-db
+- student-db
+- lecturer-db
+- course-db
+- enrollment-db
 
 ### Step 5: Access the Application
 
 Open the application in your web browser.
 
 ```text
-http://localhost:5173
+http://localhost:3000
 ```
 
-Verify that the frontend loads successfully and that you can access the application without any errors.
+Verify that the frontend loads successfully and that you can access the application without any errors. Use the login credentials provided in the _user-service_ envrionment configuration.
 
 ### Step 6: Stop the Application
 
@@ -303,4 +308,4 @@ This includes:
 - Azure Storage Account
 - Resource Group (if it was created specifically for this practical)
 
-Verify that all resources have been removed successfully before concluding the practical.
+> Verify that all resources have been removed successfully **before concluding** the practical.
