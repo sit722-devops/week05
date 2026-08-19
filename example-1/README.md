@@ -205,7 +205,7 @@ You should see the following containers:
 Open the application in your web browser.
 
 ```text
-http://localhost:5173
+http://localhost:3000
 ```
 
 Verify that the frontend loads successfully and that you can access the application without any errors.
